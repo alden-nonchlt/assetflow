@@ -4,6 +4,7 @@ import { requireAuth } from "../middleware/auth.js";
 
 const router = Router();
 
+
 /*
 =========================================
 GET ALL MAINTENANCE REQUESTS
@@ -11,6 +12,7 @@ GET ALL MAINTENANCE REQUESTS
 */
 
 router.get("/", requireAuth, (req, res) => {
+
     try {
 
         const requests = db.prepare(`
@@ -27,22 +29,28 @@ router.get("/", requireAuth, (req, res) => {
             ORDER BY m.created_at DESC
         `).all();
 
+
         res.json({
-            success: true,
-            data: requests
+            success:true,
+            data:requests
         });
 
-    } catch (err) {
+
+    } catch(err) {
 
         console.error(err);
 
         res.status(500).json({
-            success: false,
-            message: "Failed to fetch maintenance requests."
+            success:false,
+            message:"Failed to fetch maintenance requests."
         });
 
     }
+
 });
+
+
+
 
 /*
 =========================================
@@ -50,58 +58,125 @@ RAISE MAINTENANCE REQUEST
 =========================================
 */
 
-router.post("/", requireAuth, (req, res) => {
+router.post("/", requireAuth, (req,res)=>{
 
     try {
 
+
         const {
             asset_id,
-            raised_by_user_id,
             description,
             priority
         } = req.body;
 
-        if (!asset_id || !raised_by_user_id || !description) {
+
+
+        const raised_by_user_id = req.user.id;
+
+
+
+        if(!asset_id || !description){
+
             return res.status(400).json({
-                success: false,
-                message: "Asset, User and Description are required."
+
+                success:false,
+
+                message:"Asset and Description are required."
+
             });
+
         }
 
+
+
+        const asset = db.prepare(`
+
+            SELECT id
+            FROM assets
+            WHERE id = ?
+
+        `).get(asset_id);
+
+
+
+        if(!asset){
+
+            return res.status(404).json({
+
+                success:false,
+
+                message:"Asset not found."
+
+            });
+
+        }
+
+
+
+
         const result = db.prepare(`
+
             INSERT INTO maintenance_requests
             (
                 asset_id,
                 raised_by_user_id,
                 description,
-                priority
+                priority,
+                status
             )
-            VALUES (?, ?, ?, ?)
+
+            VALUES (?, ?, ?, ?, 'pending')
+
         `).run(
+
             asset_id,
+
             raised_by_user_id,
+
             description,
+
             priority || "Medium"
+
         );
 
+
+
+
         res.status(201).json({
-            success: true,
-            message: "Maintenance request created.",
-            id: result.lastInsertRowid
+
+            success:true,
+
+            message:"Maintenance request created.",
+
+            id:result.lastInsertRowid
+
         });
 
-    } catch (err) {
+
+
+    }
+    catch(err){
 
         console.error(err);
 
+
         res.status(500).json({
-            success: false,
-            message: "Failed to create maintenance request."
+
+            success:false,
+
+            message:"Failed to create maintenance request."
+
         });
 
     }
 
+
 });
+
+
+
+
+
 
 /*
 =========================================
@@ -109,52 +184,90 @@ APPROVE REQUEST
 =========================================
 */
 
-router.put("/:id/approve", requireAuth, (req, res) => {
+router.put("/:id/approve", requireAuth, (req,res)=>{
 
     try {
 
+
         const request = db.prepare(`
+
             SELECT *
             FROM maintenance_requests
             WHERE id = ?
+
         `).get(req.params.id);
 
-        if (!request) {
+
+
+        if(!request){
+
             return res.status(404).json({
-                success: false,
-                message: "Request not found."
+
+                success:false,
+
+                message:"Request not found."
+
             });
+
         }
 
+
+
         db.prepare(`
+
             UPDATE maintenance_requests
-            SET status = 'approved'
-            WHERE id = ?
+            SET status='approved'
+            WHERE id=?
+
         `).run(req.params.id);
 
+
+
+
         db.prepare(`
+
             UPDATE assets
-            SET status = 'under_maintenance'
-            WHERE id = ?
+            SET status='under_maintenance'
+            WHERE id=?
+
         `).run(request.asset_id);
 
+
+
+
         res.json({
-            success: true,
-            message: "Maintenance request approved."
+
+            success:true,
+
+            message:"Maintenance request approved."
+
         });
 
-    } catch (err) {
+
+
+    }
+    catch(err){
 
         console.error(err);
 
+
         res.status(500).json({
-            success: false,
-            message: "Failed to approve request."
+
+            success:false,
+
+            message:"Failed to approve request."
+
         });
 
     }
 
+
 });
+
+
+
+
+
 
 /*
 =========================================
@@ -162,103 +275,136 @@ ASSIGN TECHNICIAN
 =========================================
 */
 
-router.put("/:id/assign", requireAuth, (req, res) => {
+router.put("/:id/assign", requireAuth, (req,res)=>{
 
     try {
 
+
         const request = db.prepare(`
-            SELECT * FROM maintenance_requests WHERE id = ?
+
+            SELECT *
+            FROM maintenance_requests
+            WHERE id=?
+
         `).get(req.params.id);
 
-        if (!request) {
+
+
+        if(!request){
+
             return res.status(404).json({
-                success: false,
-                message: "Request not found."
+
+                success:false,
+
+                message:"Request not found."
+
             });
+
         }
 
-        if (request.status !== "approved") {
-            return res.status(400).json({
-                success: false,
-                message: "Request must be approved before assigning a technician."
-            });
-        }
+
 
         db.prepare(`
+
             UPDATE maintenance_requests
-            SET status = 'assigned'
-            WHERE id = ?
+            SET status='assigned'
+            WHERE id=?
+
         `).run(req.params.id);
 
+
+
+
         res.json({
-            success: true,
-            message: "Technician assigned."
+
+            success:true,
+
+            message:"Technician assigned."
+
         });
 
-    } catch (err) {
+
+
+    }
+    catch(err){
 
         console.error(err);
 
+
         res.status(500).json({
-            success: false,
-            message: "Failed to assign technician."
+
+            success:false,
+
+            message:"Failed to assign technician."
+
         });
 
     }
 
+
 });
+
+
+
+
+
+
 
 /*
 =========================================
-START MAINTENANCE (In Progress)
+START MAINTENANCE
 =========================================
 */
 
-router.put("/:id/start", requireAuth, (req, res) => {
+router.put("/:id/start", requireAuth, (req,res)=>{
 
     try {
 
-        const request = db.prepare(`
-            SELECT * FROM maintenance_requests WHERE id = ?
-        `).get(req.params.id);
-
-        if (!request) {
-            return res.status(404).json({
-                success: false,
-                message: "Request not found."
-            });
-        }
-
-        if (request.status !== "assigned") {
-            return res.status(400).json({
-                success: false,
-                message: "Request must have a technician assigned before starting."
-            });
-        }
 
         db.prepare(`
+
             UPDATE maintenance_requests
-            SET status = 'in_progress'
-            WHERE id = ?
+            SET status='in_progress'
+            WHERE id=?
+
         `).run(req.params.id);
 
+
+
         res.json({
-            success: true,
-            message: "Maintenance in progress."
+
+            success:true,
+
+            message:"Maintenance started."
+
         });
 
-    } catch (err) {
+
+
+    }
+    catch(err){
 
         console.error(err);
 
+
         res.status(500).json({
-            success: false,
-            message: "Failed to start maintenance."
+
+            success:false,
+
+            message:"Failed to start maintenance."
+
         });
 
     }
 
+
 });
+
+
+
+
+
+
 
 /*
 =========================================
@@ -266,33 +412,55 @@ REJECT REQUEST
 =========================================
 */
 
-router.put("/:id/reject", requireAuth, (req, res) => {
+router.put("/:id/reject", requireAuth, (req,res)=>{
 
     try {
 
+
         db.prepare(`
+
             UPDATE maintenance_requests
-            SET status = 'rejected'
-            WHERE id = ?
+            SET status='rejected'
+            WHERE id=?
+
         `).run(req.params.id);
 
+
+
         res.json({
-            success: true,
-            message: "Maintenance request rejected."
+
+            success:true,
+
+            message:"Maintenance request rejected."
+
         });
 
-    } catch (err) {
+
+
+    }
+    catch(err){
 
         console.error(err);
 
+
         res.status(500).json({
-            success: false,
-            message: "Failed to reject request."
+
+            success:false,
+
+            message:"Failed to reject request."
+
         });
 
     }
 
+
 });
+
+
+
+
+
+
 
 /*
 =========================================
@@ -300,53 +468,96 @@ RESOLVE REQUEST
 =========================================
 */
 
-router.put("/:id/resolve", requireAuth, (req, res) => {
+router.put("/:id/resolve", requireAuth, (req,res)=>{
 
     try {
 
+
         const request = db.prepare(`
+
             SELECT *
             FROM maintenance_requests
-            WHERE id = ?
+            WHERE id=?
+
         `).get(req.params.id);
 
-        if (!request) {
+
+
+        if(!request){
+
             return res.status(404).json({
-                success: false,
-                message: "Request not found."
+
+                success:false,
+
+                message:"Request not found."
+
             });
+
         }
 
+
+
+
         db.prepare(`
+
             UPDATE maintenance_requests
+
             SET
-                status = 'resolved',
-                resolved_at = CURRENT_TIMESTAMP
-            WHERE id = ?
+                status='resolved',
+                resolved_at=CURRENT_TIMESTAMP
+
+            WHERE id=?
+
         `).run(req.params.id);
 
+
+
+
+
         db.prepare(`
+
             UPDATE assets
-            SET status = 'available'
-            WHERE id = ?
+
+            SET status='available'
+
+            WHERE id=?
+
         `).run(request.asset_id);
 
+
+
+
+
         res.json({
-            success: true,
-            message: "Maintenance request resolved."
+
+            success:true,
+
+            message:"Maintenance request resolved."
+
         });
 
-    } catch (err) {
+
+
+    }
+    catch(err){
 
         console.error(err);
 
+
+
         res.status(500).json({
-            success: false,
-            message: "Failed to resolve request."
+
+            success:false,
+
+            message:"Failed to resolve request."
+
         });
 
     }
 
+
 });
+
+
 
 export default router;
