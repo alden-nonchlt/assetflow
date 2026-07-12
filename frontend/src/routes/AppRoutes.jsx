@@ -8,9 +8,11 @@ import Assets from "../pages/Assets";
 import Bookings from "../pages/Bookings";
 import Maintenance from "../pages/Maintenance";
 import OrganizationSetup from "../pages/OrganizationSetup";
+import Activity from "../pages/Activity";
 
 import ProtectedRoute from "../components/ProtectedRoute";
 import DashboardLayout from "../layouts/DashboardLayout";
+
 
 
 export default function AppRoutes(){
@@ -21,6 +23,7 @@ export default function AppRoutes(){
 
 
             {/* Public Routes */}
+
 
             <Route
                 path="/login"
@@ -35,55 +38,103 @@ export default function AppRoutes(){
 
 
 
+
             {/* Protected ERP Layout */}
 
+
             <Route
+
                 element={
+
                     <ProtectedRoute>
+
                         <DashboardLayout />
+
                     </ProtectedRoute>
+
                 }
+
             >
 
+
+
                 <Route
+
                     path="/dashboard"
+
                     element={<Dashboard />}
+
                 />
 
 
+
                 <Route
+
                     path="/assets"
+
                     element={<Assets />}
+
                 />
 
 
+
                 <Route
+
                     path="/bookings"
+
                     element={<Bookings />}
+
                 />
 
 
+
                 <Route
+
                     path="/maintenance"
+
                     element={<Maintenance />}
+
                 />
+
 
 
                 <Route
+
                     path="/organization"
+
                     element={<OrganizationSetup />}
+
                 />
+
+
+
+                <Route
+
+                    path="/activity"
+
+                    element={<Activity />}
+
+                />
+
+
 
             </Route>
 
 
 
+
+
             {/* Fallback */}
 
+
             <Route
+
                 path="*"
+
                 element={<Navigate to="/dashboard" />}
+
             />
+
 
 
         </Routes>
