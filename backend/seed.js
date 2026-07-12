@@ -41,6 +41,10 @@ for (const e of employeePlaceholders) {
     insertUser.run(e.name, e.email, hash("123456"), e.role, null);
 }
 
+// Requested demo logins (kiyo = admin, employee = standard employee)
+insertUser.run("Kiyo", "kiyo@gmail.com", hash("123456"), "admin", null);
+insertUser.run("Employee", "employee@gmail.com", hash("123456"), "employee", null);
+
 console.log("✅ Users created");
 
 // ============================================================
