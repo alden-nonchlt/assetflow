@@ -130,7 +130,7 @@ export default function Bookings() {
 
                 <button
                     onClick={createBooking}
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-150 cursor-pointer"
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                 >
                     Create Booking
                 </button>
@@ -158,7 +158,7 @@ export default function Bookings() {
                                 {bookings.map((booking) => (
                                     <tr
                                         key={booking.id}
-                                        className="border-b border-slate-50 hover:bg-slate-50 transition-colors duration-100"
+                                        className="border-b border-slate-50 hover:bg-slate-50 transition-colors duration-200"
                                     >
                                         <td className="p-4 text-sm font-medium text-slate-800">
                                             {booking.asset_tag} - {booking.asset_name}
@@ -173,7 +173,7 @@ export default function Bookings() {
                                             {booking.status !== "cancelled" && (
                                                 <button
                                                     onClick={() => cancelBooking(booking.id)}
-                                                    className="bg-red-500 hover:bg-red-600 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer"
+                                                    className="bg-red-500 hover:bg-red-600 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                                                 >
                                                     Cancel
                                                 </button>

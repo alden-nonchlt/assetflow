@@ -10,3 +10,51 @@ body {
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+
+/* Page fade transition */
+.page-fade-enter {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.page-fade-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms ease-out, transform 300ms ease-out;
+}
+
+.page-fade-exit {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.page-fade-exit-active {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 200ms ease-in, transform 200ms ease-in;
+}
+
+/* KPI card stagger animation */
+@keyframes kpiFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.kpi-card {
+    opacity: 0;
+    animation: kpiFadeIn 300ms ease-out forwards;
+}
+
+.kpi-card-stagger-1 { animation-delay: 50ms; }
+.kpi-card-stagger-2 { animation-delay: 100ms; }
+.kpi-card-stagger-3 { animation-delay: 150ms; }
+.kpi-card-stagger-4 { animation-delay: 200ms; }
+.kpi-card-stagger-5 { animation-delay: 250ms; }
+.kpi-card-stagger-6 { animation-delay: 300ms; }
+.kpi-card-stagger-7 { animation-delay: 350ms; }

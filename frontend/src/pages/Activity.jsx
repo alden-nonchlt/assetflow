@@ -62,7 +62,7 @@ export default function Activity() {
                                 {activities.map((activity) => (
                                     <tr
                                         key={activity.id}
-                                        className="border-b border-slate-50 hover:bg-slate-50 transition-colors duration-100"
+                                        className="border-b border-slate-50 hover:bg-slate-50 transition-colors duration-200"
                                     >
                                         <td className="p-4 text-sm font-medium text-slate-800">
                                             {activity.user_name || "-"}

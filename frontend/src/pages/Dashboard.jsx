@@ -83,10 +83,10 @@ export default function Dashboard() {
             <p className="text-[#78716c] text-sm ml-4 mb-6">Welcome to AssetFlow ERP Dashboard</p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                {cards.map((card) => (
+                {cards.map((card, index) => (
                     <div
                         key={card.title}
-                        className={`bg-white p-5 rounded-xl border border-[#e8e4df] shadow-sm hover:shadow-md transition-all duration-150 border-l-4 ${kpiAccents[card.title] || "border-l-slate-300"}`}
+                        className={`kpi-card kpi-card-stagger-${index + 1} bg-white p-5 rounded-xl border border-[#e8e4df] shadow-sm hover:shadow-md transition-all duration-150 border-l-4 ${kpiAccents[card.title] || "border-l-slate-300"}`}
                     >
                         <div className="flex items-center justify-between">
                             <h3 className="text-xs font-semibold text-[#78716c] uppercase tracking-wider">
@@ -146,7 +146,7 @@ export default function Dashboard() {
                                 {data.recentAssets.map((asset, i) => (
                                     <tr
                                         key={asset.id}
-                                        className={`${i % 2 === 0 ? "bg-white" : "bg-[#faf9f7]"} border-b border-[#e8e4df] hover:bg-[#f3f1ee] transition-colors duration-100`}
+                                        className={`${i % 2 === 0 ? "bg-white" : "bg-[#faf9f7]"} border-b border-[#e8e4df] hover:bg-[#f3f1ee] transition-colors duration-200`}
                                     >
                                         <td className="p-4 text-sm font-medium text-[#1e1b4b]">{asset.name}</td>
                                         <td className="p-4 text-sm font-mono text-amber-600">{asset.asset_tag}</td>

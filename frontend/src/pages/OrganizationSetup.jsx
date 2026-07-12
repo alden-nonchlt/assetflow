@@ -84,8 +84,8 @@ export default function OrganizationSetup() {
             setError("");
             try {
                 await Promise.all([loadDepartments(), loadUsers(), loadCategories()]);
-        } catch {
-            setError("Failed to load organization data");
+            } catch {
+                setError("Failed to load organization data");
             } finally {
                 setLoading(false);
             }
@@ -169,7 +169,7 @@ export default function OrganizationSetup() {
                     <button
                         key={tab.key}
                         onClick={() => setActiveTab(tab.key)}
-                        className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 cursor-pointer ${
+                        className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 cursor-pointer hover:scale-105 ${
                             activeTab === tab.key
                                 ? "bg-blue-600 text-white shadow-sm"
                                 : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
@@ -197,7 +197,7 @@ export default function OrganizationSetup() {
                             />
                             <button
                                 onClick={createDept}
-                                className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-150 cursor-pointer"
+                                className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                             >
                                 Create
                             </button>
@@ -217,13 +217,13 @@ export default function OrganizationSetup() {
                                 </thead>
                                 <tbody>
                                     {departments.map((dep) => (
-                                        <tr key={dep.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors duration-100">
+                                        <tr key={dep.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors duration-200">
                                             <td className="p-4 text-sm font-medium text-slate-800">{dep.name}</td>
                                             <td className="p-4 text-sm text-slate-600">{dep.head_name || "-"}</td>
                                             <td className="p-4"><StatusBadge status={dep.status} /></td>
                                             <td className="p-4 space-x-2">
                                                 <button
-                                                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer"
+                                                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                                                     onClick={() => {
                                                         setEditingDepartment(dep);
                                                         setDepartmentForm({
@@ -237,7 +237,7 @@ export default function OrganizationSetup() {
                                                     Edit
                                                 </button>
                                                 <button
-                                                    className={`text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer ${
+                                                    className={`text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105 ${
                                                         dep.status === "active"
                                                             ? "bg-red-500 hover:bg-red-600 text-white"
                                                             : "bg-emerald-600 hover:bg-emerald-700 text-white"
@@ -275,7 +275,7 @@ export default function OrganizationSetup() {
                             />
                             <button
                                 onClick={createCat}
-                                className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-150 cursor-pointer"
+                                className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                             >
                                 Create
                             </button>
@@ -293,11 +293,11 @@ export default function OrganizationSetup() {
                                 </thead>
                                 <tbody>
                                     {categories.map((cat) => (
-                                        <tr key={cat.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors duration-100">
+                                        <tr key={cat.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors duration-200">
                                             <td className="p-4 text-sm font-medium text-slate-800">{cat.name}</td>
                                             <td className="p-4 space-x-2">
                                                 <button
-                                                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer"
+                                                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                                                     onClick={() => {
                                                         setEditingCategory(cat);
                                                         setCategoryEditName(cat.name);
@@ -306,7 +306,7 @@ export default function OrganizationSetup() {
                                                     Edit
                                                 </button>
                                                 <button
-                                                    className="bg-red-500 hover:bg-red-600 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer"
+                                                    className="bg-red-500 hover:bg-red-600 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                                                     onClick={() => removeCategory(cat.id)}
                                                 >
                                                     Delete
@@ -343,14 +343,14 @@ export default function OrganizationSetup() {
                                 </thead>
                                 <tbody>
                                     {users.map((user) => (
-                                        <tr key={user.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors duration-100">
+                                        <tr key={user.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors duration-200">
                                             <td className="p-4 text-sm font-medium text-slate-800">{user.name}</td>
                                             <td className="p-4 text-sm text-slate-600">{user.email}</td>
                                             <td className="p-4"><StatusBadge status={user.role} /></td>
                                             <td className="p-4 text-sm text-slate-600">{user.department_name || "-"}</td>
                                             <td className="p-4">
                                                 <button
-                                                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer"
+                                                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                                                     onClick={() => {
                                                         setEditingUser(user);
                                                         setUserForm({
@@ -421,13 +421,13 @@ export default function OrganizationSetup() {
                         <div className="flex justify-end gap-3 mt-6">
                             <button
                                 onClick={() => setEditingDepartment(null)}
-                                className="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-all duration-150 cursor-pointer"
+                                className="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={saveDepartment}
-                                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all duration-150 cursor-pointer"
+                                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                             >
                                 Save
                             </button>
@@ -454,13 +454,13 @@ export default function OrganizationSetup() {
                         <div className="flex justify-end gap-3 mt-6">
                             <button
                                 onClick={() => setEditingCategory(null)}
-                                className="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-all duration-150 cursor-pointer"
+                                className="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={saveCategory}
-                                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all duration-150 cursor-pointer"
+                                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                             >
                                 Save
                             </button>
@@ -508,13 +508,13 @@ export default function OrganizationSetup() {
                         <div className="flex justify-end gap-3 mt-6">
                             <button
                                 onClick={() => setEditingUser(null)}
-                                className="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-all duration-150 cursor-pointer"
+                                className="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={saveUser}
-                                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all duration-150 cursor-pointer"
+                                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                             >
                                 Save
                             </button>

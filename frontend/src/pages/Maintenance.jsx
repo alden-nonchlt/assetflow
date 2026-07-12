@@ -119,7 +119,7 @@ export default function Maintenance() {
 
                     <button
                         onClick={createRequest}
-                        className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-150 cursor-pointer"
+                        className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                     >
                         Submit Request
                     </button>
@@ -155,7 +155,7 @@ export default function Maintenance() {
                                 {requests.map((req) => (
                                     <tr
                                         key={req.id}
-                                        className="border-b border-slate-50 hover:bg-slate-50 transition-colors duration-100"
+                                        className="border-b border-slate-50 hover:bg-slate-50 transition-colors duration-200"
                                     >
                                         <td className="p-4 text-sm font-medium text-slate-800">
                                             {req.asset_tag} - {req.asset_name}
@@ -172,13 +172,13 @@ export default function Maintenance() {
                                                 <>
                                                     <button
                                                         onClick={() => updateStatus(req.id, "approve")}
-                                                        className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer"
+                                                        className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                                                     >
                                                         Approve
                                                     </button>
                                                     <button
                                                         onClick={() => updateStatus(req.id, "reject")}
-                                                        className="bg-red-500 hover:bg-red-600 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer"
+                                                        className="bg-red-500 hover:bg-red-600 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                                                     >
                                                         Reject
                                                     </button>
@@ -187,7 +187,7 @@ export default function Maintenance() {
                                             {req.status === "approved" && (
                                                 <button
                                                     onClick={() => updateStatus(req.id, "assign")}
-                                                    className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer"
+                                                    className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                                                 >
                                                     Assign Tech
                                                 </button>
@@ -195,7 +195,7 @@ export default function Maintenance() {
                                             {req.status === "assigned" && (
                                                 <button
                                                     onClick={() => updateStatus(req.id, "start")}
-                                                    className="bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer"
+                                                    className="bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                                                 >
                                                     Start Work
                                                 </button>
@@ -203,7 +203,7 @@ export default function Maintenance() {
                                             {req.status === "in_progress" && (
                                                 <button
                                                     onClick={() => updateStatus(req.id, "resolve")}
-                                                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer"
+                                                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-3 py-1.5 rounded-lg transition-all duration-150 cursor-pointer hover:scale-105"
                                                 >
                                                     Resolve
                                                 </button>
