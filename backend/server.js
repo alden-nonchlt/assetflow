@@ -5,12 +5,18 @@ import dotenv from "dotenv";
 // Load environment variables
 dotenv.config();
 
-// Initialize database (creates tables automatically)
+// Initialize database
 import "./db.js";
 
 // Routes
 import authRoutes from "./routes/auth.js";
+
 import adminDepartmentRoutes from "./routes/adminDepartments.js";
+import adminCategoryRoutes from "./routes/adminCategories.js";
+import adminAssetRoutes from "./routes/adminAssets.js";
+import adminUserRoutes from "./routes/adminUsers.js";
+import adminDashboardRoutes from "./routes/adminDashboard.js";
+
 import assetRoutes from "./routes/assets.js";
 import allocationRoutes from "./routes/allocations.js";
 import bookingRoutes from "./routes/bookings.js";
@@ -26,9 +32,7 @@ const PORT = process.env.PORT || 5000;
 // =============================
 
 app.use(cors());
-
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: true }));
 
 // Request Logger
@@ -48,7 +52,7 @@ app.get("/", (req, res) => {
         success: true,
         name: "AssetFlow ERP API",
         version: "1.0.0",
-        message: "Backend is running 🚀"
+        message: "Backend is running 🚀",
     });
 });
 
@@ -57,7 +61,7 @@ app.get("/health", (req, res) => {
         success: true,
         status: "healthy",
         uptime: process.uptime(),
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
     });
 });
 
@@ -70,6 +74,10 @@ app.use("/api/auth", authRoutes);
 
 // Admin
 app.use("/api/admin/departments", adminDepartmentRoutes);
+app.use("/api/admin/categories", adminCategoryRoutes);
+app.use("/api/admin/assets", adminAssetRoutes);
+app.use("/api/admin/users", adminUserRoutes);
+app.use("/api/admin/dashboard", adminDashboardRoutes);
 
 // Assets
 app.use("/api/assets", assetRoutes);
@@ -83,22 +91,22 @@ app.use("/api/bookings", bookingRoutes);
 // Maintenance
 app.use("/api/maintenance", maintenanceRoutes);
 
-// Activity Logs
+// Activity
 app.use("/api/activity", activityRoutes);
 
 // =============================
-// 404 Handler
+// 404
 // =============================
 
 app.use((req, res) => {
     res.status(404).json({
         success: false,
-        message: "Endpoint not found"
+        message: "Endpoint not found",
     });
 });
 
 // =============================
-// Global Error Handler
+// Error Handler
 // =============================
 
 app.use((err, req, res, next) => {
@@ -106,7 +114,7 @@ app.use((err, req, res, next) => {
 
     res.status(err.status || 500).json({
         success: false,
-        message: err.message || "Internal Server Error"
+        message: err.message || "Internal Server Error",
     });
 });
 
@@ -116,9 +124,9 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
     console.log("");
-    console.log("===========================================");
-    console.log("🚀 AssetFlow Backend Started Successfully");
-    console.log(`🌍 Running on http://localhost:${PORT}`);
-    console.log("===========================================");
+    console.log("======================================");
+    console.log("🚀 AssetFlow Backend Started");
+    console.log(`🌍 http://localhost:${PORT}`);
+    console.log("======================================");
     console.log("");
 });
