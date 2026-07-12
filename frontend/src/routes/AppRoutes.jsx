@@ -2,9 +2,15 @@ import { Routes, Route, Navigate } from "react-router-dom";
 
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
+
 import Dashboard from "../pages/Dashboard";
+import Assets from "../pages/Assets";
+import Bookings from "../pages/Bookings";
+import Maintenance from "../pages/Maintenance";
+import OrganizationSetup from "../pages/OrganizationSetup";
 
 import ProtectedRoute from "../components/ProtectedRoute";
+import DashboardLayout from "../layouts/DashboardLayout";
 
 
 export default function AppRoutes(){
@@ -12,6 +18,9 @@ export default function AppRoutes(){
     return (
 
         <Routes>
+
+
+            {/* Public Routes */}
 
             <Route
                 path="/login"
@@ -25,20 +34,57 @@ export default function AppRoutes(){
             />
 
 
+
+            {/* Protected ERP Layout */}
+
             <Route
-                path="/dashboard"
                 element={
                     <ProtectedRoute>
-                        <Dashboard />
+                        <DashboardLayout />
                     </ProtectedRoute>
                 }
-            />
+            >
 
+                <Route
+                    path="/dashboard"
+                    element={<Dashboard />}
+                />
+
+
+                <Route
+                    path="/assets"
+                    element={<Assets />}
+                />
+
+
+                <Route
+                    path="/bookings"
+                    element={<Bookings />}
+                />
+
+
+                <Route
+                    path="/maintenance"
+                    element={<Maintenance />}
+                />
+
+
+                <Route
+                    path="/organization"
+                    element={<OrganizationSetup />}
+                />
+
+            </Route>
+
+
+
+            {/* Fallback */}
 
             <Route
                 path="*"
-                element={<Navigate to="/login" />}
+                element={<Navigate to="/dashboard" />}
             />
+
 
         </Routes>
 
