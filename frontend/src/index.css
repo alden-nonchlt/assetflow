@@ -2,6 +2,11 @@
 
 body {
     margin: 0;
-    font-family: Inter, system-ui, Arial, sans-serif;
-    background: #f8fafc;
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+    background: #f8f7f4;
+    color: #1e1b4b;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }

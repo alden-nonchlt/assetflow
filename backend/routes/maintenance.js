@@ -158,6 +158,110 @@ router.put("/:id/approve", requireAuth, (req, res) => {
 
 /*
 =========================================
+ASSIGN TECHNICIAN
+=========================================
+*/
+
+router.put("/:id/assign", requireAuth, (req, res) => {
+
+    try {
+
+        const request = db.prepare(`
+            SELECT * FROM maintenance_requests WHERE id = ?
+        `).get(req.params.id);
+
+        if (!request) {
+            return res.status(404).json({
+                success: false,
+                message: "Request not found."
+            });
+        }
+
+        if (request.status !== "approved") {
+            return res.status(400).json({
+                success: false,
+                message: "Request must be approved before assigning a technician."
+            });
+        }
+
+        db.prepare(`
+            UPDATE maintenance_requests
+            SET status = 'assigned'
+            WHERE id = ?
+        `).run(req.params.id);
+
+        res.json({
+            success: true,
+            message: "Technician assigned."
+        });
+
+    } catch (err) {
+
+        console.error(err);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to assign technician."
+        });
+
+    }
+
+});
+
+/*
+=========================================
+START MAINTENANCE (In Progress)
+=========================================
+*/
+
+router.put("/:id/start", requireAuth, (req, res) => {
+
+    try {
+
+        const request = db.prepare(`
+            SELECT * FROM maintenance_requests WHERE id = ?
+        `).get(req.params.id);
+
+        if (!request) {
+            return res.status(404).json({
+                success: false,
+                message: "Request not found."
+            });
+        }
+
+        if (request.status !== "assigned") {
+            return res.status(400).json({
+                success: false,
+                message: "Request must have a technician assigned before starting."
+            });
+        }
+
+        db.prepare(`
+            UPDATE maintenance_requests
+            SET status = 'in_progress'
+            WHERE id = ?
+        `).run(req.params.id);
+
+        res.json({
+            success: true,
+            message: "Maintenance in progress."
+        });
+
+    } catch (err) {
+
+        console.error(err);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to start maintenance."
+        });
+
+    }
+
+});
+
+/*
+=========================================
 REJECT REQUEST
 =========================================
 */

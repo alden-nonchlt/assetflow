@@ -259,8 +259,9 @@ CREATE TABLE IF NOT EXISTS maintenance_requests (
         CHECK(status IN (
             'pending',
             'approved',
-            'rejected',
+            'assigned',
             'in_progress',
+            'rejected',
             'resolved'
         )),
 
