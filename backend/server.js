@@ -10,7 +10,7 @@ import "./db.js";
 
 // Routes
 import authRoutes from "./routes/auth.js";
-import adminRoutes from "./routes/admin.js";
+import adminDepartmentRoutes from "./routes/adminDepartments.js";
 import assetRoutes from "./routes/assets.js";
 import allocationRoutes from "./routes/allocations.js";
 import bookingRoutes from "./routes/bookings.js";
@@ -31,7 +31,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-// Simple request logger
+// Request Logger
 app.use((req, res, next) => {
     console.log(
         `${new Date().toLocaleString()} | ${req.method} ${req.originalUrl}`
@@ -65,18 +65,25 @@ app.get("/health", (req, res) => {
 // API Routes
 // =============================
 
+// Authentication
 app.use("/api/auth", authRoutes);
 
-app.use("/api/admin", adminRoutes);
+// Admin
+app.use("/api/admin/departments", adminDepartmentRoutes);
 
+// Assets
 app.use("/api/assets", assetRoutes);
 
+// Allocations
 app.use("/api/allocations", allocationRoutes);
 
+// Bookings
 app.use("/api/bookings", bookingRoutes);
 
+// Maintenance
 app.use("/api/maintenance", maintenanceRoutes);
 
+// Activity Logs
 app.use("/api/activity", activityRoutes);
 
 // =============================
@@ -95,14 +102,12 @@ app.use((req, res) => {
 // =============================
 
 app.use((err, req, res, next) => {
-
     console.error(err);
 
     res.status(err.status || 500).json({
         success: false,
         message: err.message || "Internal Server Error"
     });
-
 });
 
 // =============================
@@ -110,12 +115,10 @@ app.use((err, req, res, next) => {
 // =============================
 
 app.listen(PORT, () => {
-
     console.log("");
     console.log("===========================================");
     console.log("🚀 AssetFlow Backend Started Successfully");
     console.log(`🌍 Running on http://localhost:${PORT}`);
     console.log("===========================================");
     console.log("");
-
 });
